@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
   try {
     const questions = await Question.find({vereifiedByAdmin:true}).sort("createdAt");
     // recent added questions should be at the top
-    console.log(questions)
+    // console.log(questions)
     questions.reverse();
     res.send(questions);
 
@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
 router.get('/toVerify',async (req,res)=>{
   try{
     const questions = await Question.find({vereifiedByAdmin:false}).sort("createdAt");
-    console.log(questions,"35")
+    // console.log(questions,"35")
     questions.reverse();
     res.send(questions);
   }
@@ -187,7 +187,7 @@ router.post("/:quesid/action", auth, async (req, res, next) => {
   try {
     const actionOnButton = req.body.actionTaken;
     
-    const counter = actionOnButton === "upvote-btn" ? 1 : -1;
+    const counter = actionOnButton === "upvote" ? 1 : -1;
     let question = await Question.findById(req.params.quesid).catch((error) =>
       console.log(error)
     );
@@ -216,7 +216,7 @@ router.post("/:quesid/accept", auth, async (req, res, next) => {
       let question = await Question.findById(req.params.quesid).catch((error) =>
         console.log(error)
       );
-      console.log(question);
+      // console.log(question);
       if (!question)
       return res.status(404).send("The question with the given Id doesnt exist..");
       question.vereifiedByAdmin = true;
