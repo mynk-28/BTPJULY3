@@ -20,8 +20,8 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
         password,
       })
       .then((res) => {
-        
-        
+
+
         window.sessionStorage.setItem("x-auth-token", res.data.token);
         window.sessionStorage.setItem("userId", res.data.userId);
         window.sessionStorage.setItem("email", email);
@@ -73,6 +73,7 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
           type="text"
           onChange={onChangeEmail}
           className="login-box"
+          placeholder="use college email id"
         />
         <br></br>
         <label>Password</label>

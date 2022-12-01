@@ -67,10 +67,17 @@ router.post("/", [
     return res.status(400).json({ errors: errors.array() });
   }
 
-  
+
   try {
 
     const { email, password } = req.body;
+    let isCollegeId = 0;
+
+    if (email.includes("lnmiit.ac.in"))
+      isCollegeId = 1;
+
+    if (isCollegeId === 0)
+      return res.status(400).send("Please use College email id");
 
     let user = User.findOne({ email: email });
     // ????? why user.email rather user can also be used
