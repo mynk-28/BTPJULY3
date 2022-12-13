@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+
 // using mongoose to connect to mongoDB
 const mongoose = require("mongoose");
 
@@ -15,6 +16,7 @@ const questions = require("./routes/questions");
 const answers = require("./routes/answers");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
+const notices = require("./routes/notice");
 
 const cors = require("cors");
 const path = require("path");
@@ -22,6 +24,10 @@ const path = require("path");
 // .env is used to store keys and secrets. It is not pushed to your repo 
 //i.e. github or bitbucket or anywhere you store your code. In that way it is not exposed.
 require("dotenv").config();
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
 
 const { APP_USER, APP_USER_PASSWORD } = process.env;
 
@@ -47,6 +53,7 @@ mongoose.set("useFindAndModify", false);
 // all the routes using that mentioned routes (e.g.  questions, answers, users, auth etc)
 app.use("/api/questions", questions);
 app.use("/api/answers", answers);
+app.use("/api/notices", notices);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 app.use("/api/file", require("./routes/files"));

@@ -4,11 +4,14 @@ import React, { useState, useRef } from "react";
 // axios is used to make HTTP request from node.js
 import axios from "axios";
 import "../styles/AddQuestion.css";
+import { useNavigate } from "react-router-dom";
 
 const AddQuestion = (props) => {
 
   // destructuring from props;
   const { handleAddNewQuestion, isShowSignup, setIsShowSignup } = props;
+
+  const navigate = useNavigate();
 
 
   const [title, setTitle] = useState("");
@@ -56,12 +59,13 @@ const AddQuestion = (props) => {
       .catch((e) => {
         // if any kind of error occurs it is being cathced here
         //??????????? after isShowSignup is made true or false then after that how it is showing that signup form
-        if (isShowSignup === true) {
-          setIsShowSignup(false);
-        }
-        else {
-          setIsShowSignup(true);
-        }
+        // if (isShowSignup === true) {
+        //   setIsShowSignup(false);
+        // }
+        // else {
+        //   setIsShowSignup(true);
+        // }
+        navigate('/login');
       });
   };
 

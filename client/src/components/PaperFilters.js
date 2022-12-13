@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import subjects from "../static/SubjectList"
 const Sidebar = ({
   branch,
   subject,
@@ -9,73 +10,7 @@ const Sidebar = ({
 }) => {
   const [allSemesterSubjects, setAllSemesterSubjects] = useState([]);
 
-  const allSubjects = [
-    [],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ]
-  ];
+  const allSubjects = subjects;
 
   const semesterHandler = (e) => {
     setSemester(parseInt(e.target.id[16]));
@@ -88,6 +23,7 @@ const Sidebar = ({
   };
 
   const subjectsHandler = (branchPass, semesterPass) => {
+    console.log(branchPass, semesterPass)
     const subjectList = [];
     if (branchPass && semesterPass !== 0)
       for (

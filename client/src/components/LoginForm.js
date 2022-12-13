@@ -3,11 +3,12 @@ import axios from "axios";
 import tick from "../static/tick.png";
 import cross from "../static/cross.png";
 import "../styles/LoginForm.css";
+import GoogleSignIn from "./GoogleSignIn";
 
 const LoginForm = (props) => {
 
   // destructing properties and functions
-  const { isShowLogin, setIsShowLogin, setIsLoggedIn,setIsAdmin } = props;
+  const { isShowLogin, setIsShowLogin, setIsLoggedIn, setIsAdmin } = props;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,19 +17,18 @@ const LoginForm = (props) => {
 
   const handleLogin = async () => {
     await axios
-    .post("http://localhost:5000/api/auth", {
-      email,
-      password,
-    })
-    .then((res) => {      
+      .post("http://localhost:5000/api/auth", {
+        email,
+        password,
+      })
+      .then((res) => {
         // ????? detailed meaning of these
         window.sessionStorage.setItem("x-auth-token", res.data.token);
         window.sessionStorage.setItem("userId", res.data.userId);
         window.sessionStorage.setItem("email", email);
         window.sessionStorage.setItem("name", res.data.name);
         console.log(email)
-        if(email==='19ucs151@gmail.com' && password==='Mayank@41')
-        {
+        if (email === '19ucs151@gmail.com' && password === 'Mayank@41') {
           setIsAdmin(true);
         }
         setIsLoggedIn(true);
@@ -98,6 +98,7 @@ const LoginForm = (props) => {
           <h3 className="login-successful-text">Login Unsuccessful</h3>
         </div>
       ) : null}
+      <GoogleSignIn></GoogleSignIn>
     </div>
   );
 };

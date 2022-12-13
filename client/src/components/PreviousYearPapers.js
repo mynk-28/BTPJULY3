@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Nav from "./Nav";
 
 const PreviousYearPapers = ({ filesList, errorMsg }) => {
+  let user = window.sessionStorage.getItem("userId");
   return (
     <div>
       <Nav />
@@ -18,7 +19,7 @@ const PreviousYearPapers = ({ filesList, errorMsg }) => {
 
           <div className="files-container d-flex flex-row flex-wrap">
             {errorMsg && <p className="errorMsg">{errorMsg}</p>}
-            {filesList.length > 0 ? (
+            {filesList.length > 0 && user != null ? (
               filesList.map(
                 ({
                   _id,

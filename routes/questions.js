@@ -1,4 +1,5 @@
 const { Question, validate } = require("../models/question");
+const { UserQuestion } = require("../models/user_question");
 // Question model and validate function is taken from the file
 // so that desired changes can be made into the database taking into considertion the validation 
 // of the question that the uset has just entered
@@ -11,12 +12,13 @@ const auth = require("../middleware/auth");
 // auth middleware is used wherever authentication is being required
 
 const _ = require("lodash");
+const { User } = require("../models/user");
 
 // route 1  -> to display all the already written questions sorted by date (/api/questions)
 router.get("/", async (req, res) => {
 
   try {
-    const questions = await Question.find({vereifiedByAdmin:true}).sort("createdAt");
+    const questions = await Question.find({ vereifiedByAdmin: true }).sort("createdAt");
     // recent added questions should be at the top
     // console.log(questions)
     questions.reverse();
@@ -29,14 +31,14 @@ router.get("/", async (req, res) => {
 
 });
 
-router.get('/toVerify',async (req,res)=>{
-  try{
-    const questions = await Question.find({vereifiedByAdmin:false}).sort("createdAt");
+router.get('/toVerify', async (req, res) => {
+  try {
+    const questions = await Question.find({ vereifiedByAdmin: false }).sort("createdAt");
     // console.log(questions,"35")
     questions.reverse();
     res.send(questions);
   }
-  catch(err){
+  catch (err) {
     console.error(err.message);
     res.status(500).send("some error occured");
   }
@@ -63,6 +65,13 @@ router.post("/", auth, async (req, res) => {
     });
 
     question = await question.save();
+
+    let user_question = new UserQuestion({
+      user: req.user._id,
+      question: question._id,
+      counter: 0
+    });
+    user_question = await user_question.save();
     res.send(question);
 
   } catch (error) {
@@ -186,16 +195,23 @@ router.post("/:quesid/action", auth, async (req, res, next) => {
 
   try {
     const actionOnButton = req.body.actionTaken;
-    
     const counter = actionOnButton === "upvote" ? 1 : -1;
     let question = await Question.findById(req.params.quesid).catch((error) =>
       console.log(error)
     );
 
+    let user_question = await UserQuestion.findOne({
+      user: req.user._id,
+      question: req.params.quesid
+    });
+    const initialCounter = user_question.counter;
     if (!question)
       return res.status(404).send("The question with the given Id doesnt exist..");
-
-    question.votes += counter;
+    if (initialCounter !== counter) {
+      question.votes += counter;
+      user_question.counter = counter;
+    }
+    user_question = await user_question.save();
     question = await question.save().catch((error) => console.log(error));
     res.send(question);
 
@@ -206,25 +222,25 @@ router.post("/:quesid/action", auth, async (req, res, next) => {
 });
 
 
+
 router.post("/:quesid/accept", auth, async (req, res, next) => {
 
   try {
     const actionOnButton = req.body.actionTaken;
-    
-    if(actionOnButton === "accept-btn")
-    {
+
+    if (actionOnButton === "accept-btn") {
       let question = await Question.findById(req.params.quesid).catch((error) =>
         console.log(error)
       );
       // console.log(question);
       if (!question)
-      return res.status(404).send("The question with the given Id doesnt exist..");
+        return res.status(404).send("The question with the given Id doesnt exist..");
       question.vereifiedByAdmin = true;
       question = await question.save().catch((error) => console.log(error));
       res.send(question);
 
     }
-    else{
+    else {
       const question = await Question.findByIdAndRemove(req.params.quesid);
       // taking out the question having that particular id
       if (!question)

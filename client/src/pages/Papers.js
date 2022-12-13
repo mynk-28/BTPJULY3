@@ -25,7 +25,7 @@ const Papers = () => {
     };
     getFilesList();
   }, []);
-  
+
   useEffect(() => {
     filter();
     // eslint-disable-next-line
@@ -33,7 +33,7 @@ const Papers = () => {
 
   const filter = () => {
     console.log(semester, branch, subject);
-
+    console.log("vishwas", allFilesList)
     if (semester !== 0 && branch !== "" && subject !== "") {
       const filteredFilesList = allFilesList.filter((file) => {
         return (

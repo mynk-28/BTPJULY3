@@ -1,17 +1,19 @@
 import axios from "axios";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../styles/Article.css";
 
 // images of upvaote and downvote
 import upArrow from "../static/up-arrow.png";
 import downArrow from "../static/down-arrow.png";
 import Answer from "./Answer";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../Routes";
 
 const Article = (props) => {
 
   // destructuring 
-  const { key, question, user, title, questionBody, tags, votes, deleteQuestion, setDeleteQuestion, setIsShowSignup,isAdmin } = props
+  const { key, question, user, title, questionBody, tags, votes, deleteQuestion, setDeleteQuestion, setIsShowSignup, isAdmin } = props
 
   const host = "http://localhost:5000"
 
@@ -22,6 +24,9 @@ const Article = (props) => {
   const [allAnswers, setAllAnswers] = useState([]);
   const [currentVotes, setCurrentVotes] = useState(votes);
   const [username, setUsername] = useState("");
+
+  const navigate = useNavigate();
+  const { user: globalUser } = useContext(UserContext);
 
   const token = window.sessionStorage.getItem("x-auth-token");
 
@@ -43,16 +48,16 @@ const Article = (props) => {
         setNewAnswers(!newAnswers);
         setExpand(true);
       })
-      .catch(() => setIsShowSignup(true));
+      .catch(() => navigate('/login'));
   };
 
   const DeleteHandler = async () => {
     const questionToBeDeleted = question;
-    await axios
+    axios
       .delete(`${host}/api/questions/${questionToBeDeleted}`, {
         headers: { "x-auth-token": token },
       })
-      .then(() => setDeleteQuestion(!deleteQuestion));
+      .then(() => setDeleteQuestion(true));
   };
 
   const VoteHandler = async (userAction) => {
@@ -75,23 +80,21 @@ const Article = (props) => {
       });
   };
 
-  const accessHandler = async (userAction)=>{
+  const accessHandler = async (userAction) => {
     const questionsTOAccept = question;
     await axios
-          .post(`${host}/api/questions/${questionsTOAccept}/accept`,
-          {
-            actionTaken: userAction.target.className,
-          },
-          {
-            headers: { "x-auth-token": token },
-          }
-          )
-          .then((res)=>{
-            
-          })
-          .catch(err=>{
-            
-          })
+      .post(`${host}/api/questions/${questionsTOAccept}/accept`,
+        {
+          actionTaken: userAction.target.className,
+        },
+        {
+          headers: { "x-auth-token": token },
+        }
+      )
+      .then((res) => {
+        setDeleteQuestion(true);
+      })
+      .catch(err => { })
   }
 
   useEffect(() => {
@@ -143,14 +146,14 @@ const Article = (props) => {
             <span>Question.</span> {title}
           </h4>
           <div className="article-buttons">
-          {!isAdmin ?
-            <button className="answer-question" onClick={AnswerHandler}>
-              Want To Answer
-            </button>
-            :
-            (
-              null
-            )
+            {!globalUser?.isAdmin ?
+              <button className="answer-question" onClick={AnswerHandler}>
+                Want To Answer
+              </button>
+              :
+              (
+                null
+              )
             }
             {user === window.sessionStorage.getItem("userId") ? (
               <button className="delete-question" onClick={DeleteHandler}>
@@ -159,32 +162,32 @@ const Article = (props) => {
             ) : null}
 
             {
-              !isAdmin 
-              ?
-              (
-                <div className="votes">
-                  <button className="upvote-btn" onClick={VoteHandler}>
-                    <img alt="upvote" className="upvote" src={upArrow}></img>
-                  </button>
+              !globalUser?.isAdmin
+                ?
+                (
+                  <div className="votes">
+                    <button className="upvote-btn" onClick={VoteHandler}>
+                      <img alt="upvote" className="upvote" src={upArrow}></img>
+                    </button>
 
-                  <button className="downvote-btn" onClick={VoteHandler}>
-                    <img alt="downvote" className="downvote" src={downArrow}></img>
-                  </button>
+                    <button className="downvote-btn" onClick={VoteHandler}>
+                      <img alt="downvote" className="downvote" src={downArrow}></img>
+                    </button>
 
-                  <h3 className="counter">{currentVotes}</h3>
-                </div>
-              ) 
-              :
-              (
+                    <h3 className="counter">{currentVotes}</h3>
+                  </div>
+                )
+                :
+                (
                   <div className="accept-post">
-                     <button className="accept-btn" onClick={accessHandler}>
-                        Accept
-                      </button>
+                    <button className="accept-btn" onClick={accessHandler}>
+                      Accept
+                    </button>
                     <button className="deny-btn" onClick={accessHandler}>
                       Deny
                     </button>
-                  </div> 
-              )
+                  </div>
+                )
             }
           </div>
         </div>
@@ -201,12 +204,12 @@ const Article = (props) => {
         </div>
 
         <hr></hr>
-          {!isAdmin && <span>All related Answers:</span>}
+        {!globalUser?.isAdmin && <span>All related Answers:</span>}
         <span className="expand" onClick={ExpandHandler}>
           &nbsp;&nbsp;&nbsp;(View All answers)
         </span>
       </div>
-      {answerNow &&!isAdmin? (
+      {answerNow && !globalUser?.isAdmin ? (
         <form className={`answer-box ${answerNow ? "active" : ""}`}>
           <textarea
             type="text"

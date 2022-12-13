@@ -2,6 +2,9 @@ import React, { useState, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 import axios from "axios";
+import subjects from "../static/SubjectList";
+import Nav from "./Nav";
+
 // import { Link, useLocation } from "react-router-dom";
 // import {Row, Col} from "react-bootstrap";
 
@@ -19,73 +22,7 @@ const AddPaper = (props) => {
   const [subject, setSubject] = useState("");
   const [allSemesterSubjects, setAllSemesterSubjects] = useState([]);
 
-  const allSubjects = [
-    [],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      },
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ],
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ], 
-    [
-      {
-        CSE: ["A", "B", "C", "D"],
-        CCE: ["E", "F", "G", "H"],
-        ECE: ["I", "J", "K", "L"],
-        ME: ["M", "N", "O", "P"],
-      }
-    ]
-  ];
+  const allSubjects = subjects;
 
   const handleOnSubmit = async (event) => {
     alert("your Notes / Paper has been added!")
@@ -146,7 +83,7 @@ const AddPaper = (props) => {
     console.log(branchPass);
     console.log(semester);
 
-    if (branchPass && semester !== 0){
+    if (branchPass && semester !== 0) {
       for (let i = 0; i < allSubjects[semester][0][branchPass].length; i++) {
         subjectList.push(
           <li className="dropdown-item" onClick={subjectHandler}>
@@ -176,6 +113,7 @@ const AddPaper = (props) => {
 
   return (
     <div>
+      <Nav />
       <Form className="search-form" onSubmit={handleOnSubmit}>
         {errorMsg && <p className="errorMsg">{errorMsg}</p>}
 

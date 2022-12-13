@@ -61,7 +61,7 @@ router.post("/", [
     // new tokens can be generated every time but the information that token is containing will be remain same 
     const token = user.generateAuthToken();
     const name = user.name;
-    res.send({ token: token, name: name, userId: user._id });
+    res.send({ token: token, name: name, userId: user._id, isAdmin: user.isAdmin });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("some error occured");

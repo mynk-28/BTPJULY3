@@ -57,7 +57,7 @@ router.get("/:userId", async (req, res) => {
 // that why auth middle-ware is not used here (new user is there)
 router.post("/", [
   body('email', 'Please Enter a valid email').isEmail(),
-  body('name', 'Enter a valid name').isLength({ min: 3 }),
+  // body('name', 'Enter a valid name').isLength({ min: 3 }),
   body('password', 'Min Password should be of 5 length').isLength({ min: 5 }),
 ], async (req, res) => {
 
