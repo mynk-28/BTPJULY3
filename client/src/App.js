@@ -6,8 +6,8 @@ import Nav from "./components/Nav";
 import Feed from "./components/Feed";
 import AddQuestion from "./components/AddQuestion";
 import Sidebar from "./components/Sidebar";
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/Signup";
+// import LoginForm from "./components/LoginForm";
+// import SignupForm from "./components/Signup";
 //import Admin from './components/Admin';
 function App() {
 
@@ -17,20 +17,19 @@ function App() {
   const [newQuestion, setNewQuestion] = useState(false);
   const [articles, setArticles] = useState([]);
 
-  const [isAdmin,setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // whenever auth token is there saved in the browser so automaticlly isLoggedIn become true or false
   const [isLoggedIn, setIsLoggedIn] = useState(
     window.sessionStorage.getItem("x-auth-token") ? true : false
   );
 
-    useEffect(()=>{
-      const email = window.sessionStorage.getItem("email");
-      if(email==='19ucs151@gmail.com')
-      {
-        setIsAdmin(true);
-      }
-    },[])
+  useEffect(() => {
+    const email = window.sessionStorage.getItem("email");
+    if (email === '19ucs151@gmail.com') {
+      setIsAdmin(true);
+    }
+  }, [])
   // handle login click to make sure when to show the login form
   const handleLoginClick = () => {
     // ?????? i guess this is useless
@@ -81,48 +80,48 @@ function App() {
       />
 
       {/* Login Form and it props */}
-      <LoginForm
+      {/* <LoginForm
       // passing all things as props in LoginForm component
         isShowLogin={isShowLogin}
         // isShowLogin has a boolean value (be it true or false)
         setIsAdmin={setIsAdmin}
         setIsShowLogin={setIsShowLogin}
         setIsLoggedIn={setIsLoggedIn}
-      />
+      /> */}
 
       {/* signup form and its props */}
-      <SignupForm
+      {/* <SignupForm
         isShowSignup={isShowSignup}
         // isShowSignup has a boolean value (be it true or false)
-    
+
         setIsShowSignup={setIsShowSignup}
         setIsLoggedIn={setIsLoggedIn}
-      />
-      
+      /> */}
+
       <div className="main-page">
         <Sidebar setArticles={setArticles} />
         <div className="content">
-        {/* to add a new question */}
-        {
-          !isAdmin ?
-          (
+          {/* to add a new question */}
+          {
+            !isAdmin ?
+              (
 
-            <><AddQuestion
+                <><AddQuestion
                   handleAddNewQuestion={handleAddNewQuestion}
                   isShowSignup={isShowSignup}
                   setIsShowSignup={setIsShowSignup} />
-            </>
-          )
-          :
-          (
-           null
-          )
-        }
-        <Feed
+                </>
+              )
+              :
+              (
+                null
+              )
+          }
+          <Feed
             newQuestion={newQuestion}
             articles={articles}
             setArticles={setArticles}
-            isAdmin = {isAdmin}
+            isAdmin={isAdmin}
             isShowSignup={isShowSignup}
             setIsShowSignup={setIsShowSignup} />
         </div>

@@ -4,6 +4,7 @@ import { UserContext } from "../Routes";
 import axios from 'axios';
 import tick from "../static/tick.png";
 import cross from "../static/cross.png";
+import "../styles/LoginForm.css"
 
 const Login = (props) => {
 
@@ -66,26 +67,27 @@ const Login = (props) => {
 
     return (
         // that login form will be active or not is actually depending on the isShowLogin
-        <div className={``}>
-            <form className="form">
+        <div className="login">
+            <form className="form-box">
                 <h1 className="login-text">Welcome Back!</h1>
                 <label>Email address</label>
-                <br></br>
 
                 <input
                     type="email"
                     onChange={onChangeEmail}
                     className="login-box"
+                    placeholder="Email"
                 />
 
                 <br></br>
                 <label>Password</label>
-                <br></br>
+
 
                 <input
                     type="password"
                     onChange={onChangePassword}
                     className="login-box"
+                    placeholder="Password"
                 />
 
                 <br></br>
